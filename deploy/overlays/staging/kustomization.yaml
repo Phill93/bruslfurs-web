@@ -26,7 +26,7 @@ patches:
       value: staging.brusler-furs.de
     - op: add
       path: /metadata/annotations/traefik.ingress.kubernetes.io~1router.middlewares
-      value: buslfurs-staging-buslfurs-basic-auth@kubernetescrd,buslfurs-staging-buslfurs-noindex@kubernetescrd
+      value: buslfurs-staging-buslfurs-noindex@kubernetescrd
   target:
     kind: Ingress
     name: buslfurs-web

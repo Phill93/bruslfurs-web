@@ -92,19 +92,9 @@ kustomize build deploy/overlays/production
 
 Der GitOps-Controller muss `deploy/overlays/production` beobachten. GitHub Actions schreibt nach jedem erfolgreichen Image-Build den unveränderlichen Image-Tag in dieses Overlay.
 
-## Passwortgeschütztes Staging
+## Staging
 
-Das Staging-Overlay veröffentlicht dieselbe Site unter `https://staging.brusler-furs.de`, schützt sie über Traefik Basic Auth und setzt zusätzlich `X-Robots-Tag: noindex, nofollow, noarchive`. Das Klartextpasswort wird nicht im Repository gespeichert.
-
-Vor dem ersten Staging-Rollout einmalig das benötigte Secret im Namespace `buslfurs` erzeugen. `htpasswd` fragt das Passwort interaktiv ab:
-
-```bash
-kubectl -n buslfurs create secret generic staging-buslfurs-basic-auth \
-  --from-literal=users="$(htpasswd -nB buslfurs)" \
-  --dry-run=client -o yaml | kubectl apply -f -
-```
-
-Der Benutzername ist in diesem Beispiel `buslfurs`. Zum Ändern des Passworts denselben Befehl erneut ausführen. Das Secret muss existieren, bevor Traefik Anfragen für Staging verarbeitet.
+Das Staging-Overlay veröffentlicht dieselbe Site ohne Zugangsschutz unter `https://staging.brusler-furs.de`. Der Response-Header `X-Robots-Tag: noindex, nofollow, noarchive` verhindert, dass Suchmaschinen die temporäre Umgebung indexieren oder archivieren.
 
 Manifest prüfen:
 
