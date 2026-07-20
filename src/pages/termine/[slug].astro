@@ -1,0 +1,41 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import { formatDate, formatEventDate } from '../../utils/events';
+
+export async function getStaticPaths() {
+  const events = await getCollection('events');
+  return events.map((event) => ({ params: { slug: event.data.slug }, props: { event } }));
+}
+const { event } = Astro.props;
+const { Content } = await render(event);
+const registrationAvailable = event.data.registrationUrl && event.data.status === 'open';
+---
+<BaseLayout title={`${event.data.title} – Buslfurs`} description={event.data.summary}>
+  <article>
+    <header class="event-hero">
+      <div class="shell event-hero__inner">
+        <a class="back-link" href="/termine/">← Alle Termine</a>
+        <StatusBadge status={event.data.status} />
+        <h1>{event.data.title}</h1>
+        <p class="lead">{event.data.summary}</p>
+      </div>
+    </header>
+    <div class="shell event-layout">
+      <div class="prose"><Content /></div>
+      <aside class="event-facts" aria-label="Eventinformationen">
+        <h2>Auf einen Blick</h2>
+        <dl>
+          <div><dt>Wann</dt><dd>{formatEventDate(event.data.start, event.data.end)}</dd></div>
+          <div><dt>Wo</dt><dd>{event.data.mapUrl ? <a href={event.data.mapUrl} rel="noreferrer">{event.data.location} ↗</a> : event.data.location}</dd></div>
+          {event.data.registrationDeadline && <div><dt>Anmeldeschluss</dt><dd>{formatDate(event.data.registrationDeadline)}</dd></div>}
+        </dl>
+        {registrationAvailable && <a class="button" href={event.data.registrationUrl} rel="noreferrer">Jetzt anmelden</a>}
+        {event.data.status === 'full' && <p class="notice">Dieses Event ist ausgebucht.</p>}
+        {event.data.status === 'cancelled' && <p class="notice notice--danger">Dieses Event wurde abgesagt.</p>}
+      </aside>
+    </div>
+    {event.data.galleries.length > 0 && <section class="section section--blue"><div class="shell"><p class="eyebrow eyebrow--light">Erinnerungen</p><h2>Bildergalerien</h2><p>Die Bilder werden von Teilnehmenden auf externen Seiten bereitgestellt.</p><div class="gallery-links">{event.data.galleries.map((gallery) => <a href={gallery.url} rel="noreferrer"><strong>{gallery.label}</strong>{gallery.photographer && <span>von {gallery.photographer}</span>}<span aria-hidden="true">↗</span></a>)}</div></div></section>}
+  </article>
+</BaseLayout>

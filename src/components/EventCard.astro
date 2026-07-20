@@ -1,0 +1,19 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatEventDate } from '../utils/events';
+import StatusBadge from './StatusBadge.astro';
+interface Props { event: CollectionEntry<'events'> }
+const { event } = Astro.props;
+---
+<article class="event-card">
+  <div class="event-card__top">
+    <p class="event-card__date">{formatEventDate(event.data.start, event.data.end)}</p>
+    <StatusBadge status={event.data.status} />
+  </div>
+  <h3><a href={`/termine/${event.data.slug}/`}>{event.data.title}</a></h3>
+  <p>{event.data.summary}</p>
+  <div class="event-card__bottom">
+    <span aria-label="Ort">⌖ {event.data.location}</span>
+    <a class="arrow-link" href={`/termine/${event.data.slug}/`}>Details <span aria-hidden="true">→</span></a>
+  </div>
+</article>

@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EventCard from '../components/EventCard.astro';
+import { splitEvents } from '../utils/events';
+const { upcoming } = splitEvents(await getCollection('events'));
+const nextEvent = upcoming[0];
+---
+<BaseLayout title="Buslfurs – gemeinsam unterwegs">
+  <section class="hero shell">
+    <div class="hero__copy">
+      <p class="eyebrow">Furry-Community</p>
+      <h1>Gemeinsam ist mehr <span>flauschig.</span></h1>
+      <p class="lead">Willkommen bei den Buslfurs! Hier findest du unsere nächsten Treffen, die Anmeldung und Erinnerungen an vergangene Events.</p>
+      <div class="button-row">
+        <a class="button" href="/termine/">Nächste Termine</a>
+        <a class="button button--secondary" href="https://t.me/+_aHCZ1ff95w4M2Zi" rel="noreferrer">Zu Telegram</a>
+      </div>
+    </div>
+    <div class="hero__visual">
+      <div class="crest-backdrop" aria-hidden="true"></div>
+      <img src="/logo.png" width="1600" height="1235" alt="Das Buslfurs-Wappen, umgeben von sechs bunten Furry-Charakteren" />
+    </div>
+  </section>
+
+  <section class="section shell">
+    <div class="section-heading">
+      <div><p class="eyebrow">Als Nächstes</p><h2>Wir sehen uns dort</h2></div>
+      <a class="arrow-link" href="/termine/">Alle Termine →</a>
+    </div>
+    {nextEvent ? <EventCard event={nextEvent} /> : <div class="empty-state"><h3>Noch nichts geplant</h3><p>Der nächste Termin erscheint hier, sobald er feststeht.</p></div>}
+  </section>
+
+  <section class="section section--blue">
+    <div class="shell feature-grid">
+      <article><span class="feature-number">01</span><h2>Vorbeikommen</h2><p>Such dir einen Termin aus und folge dem Anmeldelink auf der Eventseite.</p></article>
+      <article><span class="feature-number">02</span><h2>Kennenlernen</h2><p>Ob mit oder ohne Suit: Bei uns zählt ein freundliches, respektvolles Miteinander.</p></article>
+      <article><span class="feature-number">03</span><h2>Erinnern</h2><p>Nach dem Event sammeln wir die externen Galerien unserer Teilnehmenden an einem Ort.</p></article>
+    </div>
+  </section>
+
+  <section class="section shell callout">
+    <div><p class="eyebrow">Bleib auf dem Laufenden</p><h2>Komm in unsere Telegram-Gruppe</h2><p>Dort tauschen wir uns aus und teilen Neuigkeiten rund um unsere Treffen.</p></div>
+    <a class="button button--accent" href="https://t.me/+_aHCZ1ff95w4M2Zi" rel="noreferrer">Gruppe öffnen</a>
+  </section>
+</BaseLayout>

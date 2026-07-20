@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EventCard from '../../components/EventCard.astro';
+import { splitEvents } from '../../utils/events';
+const { upcoming, past } = splitEvents(await getCollection('events'));
+---
+<BaseLayout title="Termine – Buslfurs" description="Kommende und vergangene Treffen der Buslfurs.">
+  <header class="page-hero shell"><p class="eyebrow">Treffen & Events</p><h1>Termine</h1><p class="lead">Hier findest du alle geplanten Treffen sowie Galerien vergangener Events.</p></header>
+  <section class="section shell">
+    <div class="section-heading"><h2>Demnächst</h2><span class="count">{upcoming.length}</span></div>
+    <div class="card-list">{upcoming.map((event) => <EventCard event={event} />)}</div>
+    {!upcoming.length && <div class="empty-state"><h3>Gerade ist noch nichts geplant.</h3><p>Schau bald wieder vorbei oder folge uns auf Telegram.</p></div>}
+  </section>
+  <section class="section shell section--past">
+    <div class="section-heading"><h2>Vergangene Events</h2><span class="count">{past.length}</span></div>
+    <div class="card-list">{past.map((event) => <EventCard event={event} />)}</div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const questions = [
+  ['Muss ich einen Fursuit haben?', 'Nein. Du bist mit oder ohne Fursuit willkommen.'],
+  ['Wie melde ich mich an?', 'Wenn eine Anmeldung nötig ist, findest du den externen Anmeldelink direkt beim jeweiligen Termin.'],
+  ['Wo finde ich Bilder vergangener Treffen?', 'Auf vergangenen Eventseiten sammeln wir Links zu Galerien, die von Teilnehmenden selbst gehostet werden.'],
+  ['Wo bekomme ich kurzfristige Neuigkeiten?', 'Aktuelle Absprachen und Community-Neuigkeiten teilen wir in unserer Telegram-Gruppe.'],
+];
+---
+<BaseLayout title="FAQ – Buslfurs">
+  <header class="page-hero shell"><p class="eyebrow">Gut zu wissen</p><h1>Häufige Fragen</h1><p class="lead">Die wichtigsten Antworten für deinen ersten Besuch.</p></header>
+  <section class="section shell faq-list">{questions.map(([question, answer]) => <details><summary>{question}</summary><p>{answer}</p></details>)}<div class="placeholder-note"><strong>Redaktioneller Platzhalter</strong><p>Ergänzt hier vor Veröffentlichung weitere gruppenspezifische Fragen, etwa zu Altersgrenzen, Kosten oder Barrierefreiheit.</p></div></section>
+</BaseLayout>

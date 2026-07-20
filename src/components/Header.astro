@@ -1,0 +1,31 @@
+---
+const path = Astro.url.pathname;
+const nav = [
+  ['/termine/', 'Termine'],
+  ['/ueber-uns/', 'Über uns'],
+  ['/faq/', 'FAQ'],
+  ['/regeln/', 'Regeln'],
+  ['/kontakt/', 'Kontakt'],
+];
+---
+<header class="site-header">
+  <a class="brand" href="/" aria-label="Buslfurs – Startseite">
+    <img src="/logo.png" alt="" width="1600" height="1235" />
+    <span>Buslfurs</span>
+  </a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+    <span class="sr-only">Navigation öffnen</span><span aria-hidden="true">☰</span>
+  </button>
+  <nav id="site-nav" aria-label="Hauptnavigation">
+    {nav.map(([href, label]) => <a href={href} aria-current={path.startsWith(href) ? 'page' : undefined}>{label}</a>)}
+  </nav>
+</header>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.nav-toggle');
+  const nav = document.querySelector<HTMLElement>('#site-nav');
+  button?.addEventListener('click', () => {
+    const open = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', String(!open));
+    nav?.classList.toggle('is-open', !open);
+  });
+</script>
