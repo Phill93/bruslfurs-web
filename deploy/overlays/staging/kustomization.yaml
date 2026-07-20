@@ -2,31 +2,31 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namePrefix: staging-
 resources:
-  - ../../base
-  - middleware.yaml
+- ../../base
+- middleware.yaml
 labels:
-  - pairs:
-      app.kubernetes.io/instance: staging
-    includeSelectors: true
+- includeSelectors: true
+  pairs:
+    app.kubernetes.io/instance: staging
 images:
-  - name: buslfurs-web
-    newName: ghcr.io/OWNER/REPOSITORY
-    newTag: initial
+- name: buslfurs-web
+  newName: ghcr.io/phill93/bruslfurs-web
+  newTag: 94a1f6143e5c-1
 patches:
-  - target:
-      kind: Deployment
-      name: buslfurs-web
-    patch: |-
-      - op: replace
-        path: /spec/replicas
-        value: 1
-  - target:
-      kind: Ingress
-      name: buslfurs-web
-    patch: |-
-      - op: replace
-        path: /spec/rules/0/host
-        value: staging.brusler-furs.de
-      - op: add
-        path: /metadata/annotations/traefik.ingress.kubernetes.io~1router.middlewares
-        value: buslfurs-staging-buslfurs-basic-auth@kubernetescrd,buslfurs-staging-buslfurs-noindex@kubernetescrd
+- patch: |-
+    - op: replace
+      path: /spec/replicas
+      value: 1
+  target:
+    kind: Deployment
+    name: buslfurs-web
+- patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: staging.brusler-furs.de
+    - op: add
+      path: /metadata/annotations/traefik.ingress.kubernetes.io~1router.middlewares
+      value: buslfurs-staging-buslfurs-basic-auth@kubernetescrd,buslfurs-staging-buslfurs-noindex@kubernetescrd
+  target:
+    kind: Ingress
+    name: buslfurs-web
