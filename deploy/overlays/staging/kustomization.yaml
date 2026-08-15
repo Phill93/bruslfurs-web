@@ -11,7 +11,7 @@ labels:
 images:
 - name: buslfurs-web
   newName: ghcr.io/phill93/bruslfurs-web
-  newTag: c8a4d1902a14-28
+  newTag: fee696b6a57d-29
 patches:
 - patch: |-
     - op: replace
